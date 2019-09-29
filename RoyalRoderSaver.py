@@ -60,7 +60,7 @@ def page(st,ed):
            cal_p=1
            if math.floor(i/10)*10+int(final_n) < i:
                cal_p+=1
-               want_p = 1+total_p-cal_p
+           want_p = 1+total_p-cal_p
        else : # 첫 페이지의 게시물이 두자리 번호일 경우
            want_p = 1+total_p-math.ceil(i/10)
        #want_p = 1+total_p-cal_p
