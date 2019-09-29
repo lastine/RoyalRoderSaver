@@ -33,12 +33,12 @@ def selector(x,y):
     return base_selector+tr_number+td_number
 
 def title(x):
-   title_comp=""
-   for i in range(1,5):
-       title_comp = title_comp+soup.select(selector(x,i))[0].text.strip()+" "
-       table = title_comp.maketrans('\/:*?"<>|','_________')
-       title_comp = title_comp.translate(table)
-   return title_comp
+    title_comp=""
+    for i in range(1,5):
+        title_comp = title_comp+soup.select(selector(x,i))[0].text.strip()+" "
+        table = title_comp.maketrans('\/:*?"<>|','_________')
+        title_comp = title_comp.translate(table)
+    return title_comp
 
 def ini():
     global soup, total_p, final_n, inital_n
@@ -54,40 +54,40 @@ def ini():
     final_n = soup.select(selector(1,1))[0].text.strip() #마지막 페이지의 게시물 개수, 공백 제거해야하
 
 def page(st,ed):
-   page=[]
-   for i in (st,ed):
-       if len(final_n) == 1: # 첫 페이지의 게시물이 한자리 번호일 경우
-           cal_p=1
-           if math.floor(i/10)*10+int(final_n) < i:
-               cal_p+=1
-           want_p = 1+total_p-cal_p
-       else : # 첫 페이지의 게시물이 두자리 번호일 경우
-           want_p = 1+total_p-math.ceil(i/10)
-       #want_p = 1+total_p-cal_p
-       print(want_p)
-       page.append(want_p)
-   return page
+    page=[]
+    for i in (st,ed):
+        if len(final_n) == 1: # 첫 페이지의 게시물이 한자리 번호일 경우
+            cal_p=1
+            if math.floor(i/10)*10+int(final_n) < i:
+                cal_p+=1+1*(i//10)
+            elif (i//10)!=0: # 10*n 단위 게시물부터 속해있는 페이지의 마지막 게시물까지
+                cal_p+=(i//10)
+            want_p = 1+total_p-cal_p
+        else : # 첫 페이지의 게시물이 두자리 번호일 경우
+            want_p = 1+total_p-math.ceil(i/10)
+        page.append(want_p)
+    return page
 
 def macro(count): # 인덱스로 접근한다.
-   pyperclip.copy(title_list[count]) #게시글 내용을 클립보드로 복사한다.
-   webbrowser.open(address_list[count])
-   time.sleep(copy_sleep)
-   pyautogui.hotkey('ctrl', 's')
-   time.sleep(paste_sleep)
-   pyautogui.hotkey('ctrl', 'v')
-   time.sleep(enter_sleep)
-   pyautogui.hotkey('enter')
-   time.sleep(close_sleep)
-   pyautogui.hotkey('ctrl', 'w')
+    pyperclip.copy(title_list[count]) #게시글 내용을 클립보드로 복사한다.
+    webbrowser.open(address_list[count])
+    time.sleep(copy_sleep)
+    pyautogui.hotkey('ctrl', 's')
+    time.sleep(paste_sleep)
+    pyautogui.hotkey('ctrl', 'v')
+    time.sleep(enter_sleep)
+    pyautogui.hotkey('enter')
+    time.sleep(close_sleep)
+    pyautogui.hotkey('ctrl', 'w')
 
 def list_append():
-   for j in range(1,11):
-       try:
-           title_list.append(title(j))
-           index_list.append(soup.select(selector(j,1))[0].text.strip())
-           address_list.append(soup.select(".subj > a")[j-1]['href'])
-       except:
-           break    
+    for j in range(1,11):
+        try:
+            title_list.append(title(j))
+            index_list.append(soup.select(selector(j,1))[0].text.strip())
+            address_list.append(soup.select(".subj > a")[j-1]['href'])
+        except:
+            break    
 
 def parsing(st,ed):
     global title_list, address_list, index_list, soup
@@ -104,6 +104,9 @@ def parsing(st,ed):
             else:
                 temp_st = i
                 break
+
+##################UI 부분##################
+     
 form_class = uic.loadUiType("main.ui")[0]
 
 class MyWindow(QMainWindow, form_class):
@@ -214,3 +217,4 @@ if __name__ == "__main__":
     myWindow=MyWindow()
     myWindow.show()
     app.exec_()
+    
