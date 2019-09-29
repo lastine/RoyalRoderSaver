@@ -42,14 +42,15 @@ def title(x):
 
 def ini():
     global soup, total_p, final_n, inital_n
+    main_notice=0
     soup = url_soup(url_t,url_id,1)          
     for i in range(1,11):
         try:
             inital_n=int(soup.select(selector(i,1))[0].text.strip())
             break
         except:
-            pass 
-    total_p = math.ceil(inital_n/10)
+            main_notice+=1 
+    total_p = math.ceil((inital_n+main_notice)/10) #공지글을 포함한 총 페이지 개수를 파악
     soup = url_soup(url_t,url_id,total_p)
     final_n = soup.select(selector(1,1))[0].text.strip() #마지막 페이지의 게시물 개수, 공백 제거해야하
 
