@@ -53,6 +53,24 @@ def ini():
     total_p = math.ceil((inital_n+main_notice)/10) #공지글을 포함한 총 페이지 개수를 파악
     soup = url_soup(url_t,url_id,total_p)
     final_n = soup.select(selector(1,1))[0].text.strip() #마지막 페이지의 게시물 개수, 공백 제거해야하
+    
+def notice():
+    global soup
+    soup = url_soup(url_t,url_id,1) 
+    main_notice=0         
+    for i in range(1,11):
+        try:
+            inital_n=int(soup.select(selector(i,1))[0].text.strip())
+            break
+        except:
+            main_notice+=1
+    if main_notice==0:
+        print("공지글이 없습니다.")
+    else:
+        for i in range(1,main_notice+1):
+            pyperclip.copy(title(i)) #게시글 내용을 클립보드로 복사한다.
+            webbrowser.open(soup.select(".subj > a")[i-1]['href'])
+            hotkey()
 
 def page(st,ed):
     page=[]
@@ -72,6 +90,9 @@ def page(st,ed):
 def macro(count): # 인덱스로 접근한다.
     pyperclip.copy(title_list[count]) #게시글 내용을 클립보드로 복사한다.
     webbrowser.open(address_list[count])
+    hotkey() 
+
+def hotkey():
     time.sleep(copy_sleep)
     pyautogui.hotkey('ctrl', 's')
     time.sleep(paste_sleep)
