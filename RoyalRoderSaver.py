@@ -223,7 +223,7 @@ class MyWindow(QMainWindow, form_class):
             setname("point", setxt)
         elif id_cr in (20, 21, 22, 23):  # 한백
             setname("hanbaek", setxt)
-        elif id_cr in (26, 27, 28, 29, 30, 31, 32, 33):  # 리버스패스
+        elif id_cr in (26, 27, 28, 29, 30, 31, 32, 33):  # 리버스페스
             setname("rps", setxt)
         url_id = self.id.text()
         url_t = self.id_t.text()
